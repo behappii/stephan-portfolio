@@ -1,6 +1,7 @@
 import { hash } from '@node-rs/argon2';
 import { describe, expect, it } from 'vitest';
 import {
+	attemptLogin,
 	createSession,
 	deleteSession,
 	RateLimiter,
@@ -72,5 +73,25 @@ describe('RateLimiter', () => {
 		rl.registerFailure('b', 0);
 		rl.registerFailure('c', 5000);
 		expect(rl.size).toBe(1);
+	});
+});
+
+describe('attemptLogin', () => {
+	it('параллельные неверные попытки не проходят лимит', async () => {
+		const h = await hash('верный пароль');
+		const rl = new RateLimiter(5, 15 * 60_000);
+		const results = await Promise.all(
+			Array.from({ length: 20 }, () => attemptLogin(rl, '1.2.3.4', 'не тот', h))
+		);
+		expect(results.filter((r) => r === 'invalid')).toHaveLength(5);
+		expect(results.filter((r) => r === 'blocked')).toHaveLength(15);
+	});
+
+	it('верный пароль снимает счётчик', async () => {
+		const h = await hash('верный пароль');
+		const rl = new RateLimiter(5, 15 * 60_000);
+		expect(await attemptLogin(rl, 'ip', 'не тот', h)).toBe('invalid');
+		expect(await attemptLogin(rl, 'ip', 'верный пароль', h)).toBe('ok');
+		expect(rl.size).toBe(0);
 	});
 });

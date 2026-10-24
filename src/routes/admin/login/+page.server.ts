@@ -1,6 +1,6 @@
 import { dev } from '$app/env';
 import { fail, redirect } from '@sveltejs/kit';
-import { createSession, RateLimiter, SESSION_COOKIE, verifyPassword } from '#lib/server/auth.ts';
+import { attemptLogin, createSession, RateLimiter, SESSION_COOKIE } from '#lib/server/auth.ts';
 import { getDb } from '#lib/server/db/index.ts';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -17,11 +17,11 @@ export const actions: Actions = {
 			return fail(429, { error: 'Слишком много попыток. Попробуйте через 15 минут.' });
 		}
 		const password = String((await request.formData()).get('password') ?? '');
-		if (!(await verifyPassword(password, process.env.ADMIN_PASSWORD_HASH))) {
-			limiter.registerFailure(ip);
-			return fail(400, { error: 'Неверный пароль' });
+		const result = await attemptLogin(limiter, ip, password, process.env.ADMIN_PASSWORD_HASH);
+		if (result === 'blocked') {
+			return fail(429, { error: 'Слишком много попыток. Попробуйте через 15 минут.' });
 		}
-		limiter.reset(ip);
+		if (result === 'invalid') return fail(400, { error: 'Неверный пароль' });
 		const { token, expiresAt } = createSession(getDb());
 		cookies.set(SESSION_COOKIE, token, {
 			path: '/',

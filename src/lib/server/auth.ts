@@ -83,3 +83,19 @@ export class RateLimiter {
 		}
 	}
 }
+
+export type LoginResult = 'ok' | 'invalid' | 'blocked';
+
+export async function attemptLogin(
+	limiter: RateLimiter,
+	ip: string,
+	password: string,
+	hash: string | undefined
+): Promise<LoginResult> {
+	if (limiter.isBlocked(ip)) return 'blocked';
+	// Попытка учитывается до первого await, иначе параллельные запросы проскакивают лимит.
+	limiter.registerFailure(ip);
+	if (!(await verifyPassword(password, hash))) return 'invalid';
+	limiter.reset(ip);
+	return 'ok';
+}
