@@ -37,3 +37,21 @@ test('вход и выход', async ({ page }) => {
 	await page.goto('/admin');
 	await expect(page).toHaveURL('/admin/login');
 });
+
+test('закодированный путь не обходит защиту админки', async ({ request }) => {
+	for (const path of [
+		'/%61dmin',
+		'/%61dmin/settings',
+		'/%61dmin/backup/export',
+		'/a%64min/backup'
+	]) {
+		const res = await request.get(path, { maxRedirects: 0 });
+		expect(res.status(), path).toBe(303);
+		expect(res.headers().location, path).toBe('/admin/login');
+	}
+	const post = await request.post('/%61dmin/backup?/snapshot', {
+		headers: { origin: 'http://localhost:4173', accept: 'application/json' },
+		maxRedirects: 0
+	});
+	expect(await post.json()).toMatchObject({ type: 'redirect', location: '/admin/login' });
+});

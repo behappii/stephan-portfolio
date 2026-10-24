@@ -13,8 +13,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.admin = admin;
 	event.locals.sessionToken = admin ? token : null;
 
-	const { pathname } = event.url;
-	if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !admin) {
+	// Проверяем найденный маршрут, а не сырой путь: SvelteKit декодирует путь перед роутингом,
+	// и /%61dmin попадает в /admin.
+	const route = event.route.id ?? '';
+	if (route.startsWith('/admin') && route !== '/admin/login' && !admin) {
 		redirect(303, '/admin/login');
 	}
 	return resolve(event);
