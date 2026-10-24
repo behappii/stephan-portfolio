@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import { login } from './helpers';
 
 test('правка заголовка первого экрана видна на главной', async ({ page }) => {

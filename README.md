@@ -1,56 +1,33 @@
-# sv
+# behappii.ru
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Сайт-портфолио на SvelteKit с админкой для редактирования контента. Дизайн — `docs/design/`, спецификация — `docs/superpowers/specs/`.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Разработка
 
 ```sh
-# create a new project
-npx sv create my-app
+pnpm install
+pnpm hash-password            # скопируйте строку в .env
+pnpm dev                      # http://localhost:5173, админка — /admin
 ```
 
-To recreate this project with the same configuration:
+База и картинки лежат в `./data` (переменная `DATA_DIR`). При первом запуске база заполняется текстами из макета.
 
-```sh
-# recreate this project
-pnpm dlx sv@1.1.1 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" --install pnpm stephan-portfolio
-```
+| Команда                         | Что делает                                                                                          |
+| ------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `pnpm test`                     | модульные тесты (Vitest)                                                                            |
+| `pnpm test:e2e`                 | сквозные тесты (Playwright, сам собирает и поднимает сайт)                                          |
+| `pnpm check`, `pnpm lint`       | типы и стиль                                                                                        |
+| `pnpm db:generate --name <имя>` | миграция после правки `src/lib/server/db/schema.ts`; затем поднимите `SCHEMA_VERSION` в `client.ts` |
 
-## Adding features
+## Развёртывание на VPS
 
-Add features to your project with `sv add`:
+1. Скопируйте репозиторий на сервер, создайте `.env` по образцу `.env.example`.
+2. `docker compose up -d --build` — сайт слушает `127.0.0.1:3000`.
+3. Настройте HTTPS через обратный прокси, например Caddy: `Caddyfile.example`.
 
-```sh
-npx sv add
-```
+Обновление: `git pull && docker compose up -d --build`. Миграции применяются при старте.
 
-For example, to add Tailwind CSS:
+## Бэкапы
 
-```sh
-npx sv add tailwindcss
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- В админке → «Бэкапы»: скачать архив, загрузить архив, восстановить один из 10 автобэкапов.
+- С сервера: `docker compose cp web:/data ./data-backup` копирует базу, картинки и автобэкапы.
