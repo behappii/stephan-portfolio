@@ -59,19 +59,21 @@ scripts/hash-password.ts          — генерация ADMIN_PASSWORD_HASH
 
 | Таблица | Поля |
 |---|---|
-| `settings` (одна строка, `id = 1`) | `name`, `city`, `hero_eyebrow`, `hero_title`, `hero_title_accent`, `hero_text`, `hero_cta_primary`, `hero_cta_secondary`, `stack_title`, `stack_subtitle`, `stack_eyebrow`, `projects_title`, `projects_eyebrow`, `approach_title`, `approach_eyebrow`, `contact_title`, `contact_eyebrow`, `email`, `footer_year`, `seo_title`, `seo_description` |
-| `stack_items` | `id`, `sort`, `title`, `description`, `icon` (`web` \| `mobile` \| `desktop` \| `infra` \| `design`), `tags` (JSON-массив строк) |
+| `settings` (одна строка, `id = 1`) | `name`, `city`, `hero_title`, `hero_title_accent`, `hero_text`, `hero_cta_primary`, `hero_cta_secondary`, `stack_title`, `stack_subtitle`, `stack_eyebrow`, `projects_title`, `projects_eyebrow`, `approach_title`, `approach_eyebrow`, `contact_title`, `contact_eyebrow`, `email`, `footer_year`, `seo_title`, `seo_description` |
+| `stack_items` | `id`, `sort`, `title`, `description`, `icon` (`web` \| `mobile` \| `desktop` \| `infra` \| `design` \| `ai`), `tags` (JSON-массив строк) |
 | `projects` | `id`, `sort`, `title`, `category`, `year`, `description`, `image` (имя файла или `null`), `url` (или `null`), `tags` (JSON), `published` (boolean) |
 | `approach_steps` | `id`, `sort`, `title`, `description`, `tags` (JSON) |
 | `links` | `id`, `sort`, `label`, `url` |
 | `sessions` | `id` (случайный токен, хранится хеш SHA-256), `expires_at` |
+
+Плашка над заголовком первого экрана — `{name} · {city}`, футер — `© {footer_year} {name}`.
 
 - Метки разделов редактируются только по тексту («стек», «проекты»…): номера «01 ·», «02 ·» и номера этапов вычисляются из порядка разделов и карточек.
 - Теги хранятся JSON-массивом: по ним нет поиска и связей.
 - `sort` — целое число; перестановка меняет местами `sort` соседних записей в одной транзакции.
 - Подписи окон-мокапов на первом экране («behappii.ru/...», «SvelteKit · Next.js»…) в первой версии не редактируются и остаются в разметке.
 
-**Миграции и наполнение.** При старте приложения выполняются миграции drizzle-kit. Если `settings` пуста, `seed.ts` заполняет базу текстами из макета, включая заглушки в квадратных скобках.
+**Миграции и наполнение.** При старте приложения выполняются миграции drizzle-kit. Если `settings` пуста, `seed.ts` заполняет базу текстами из макета, включая заглушки в квадратных скобках. Версия схемы — `PRAGMA user_version`, равная константе `SCHEMA_VERSION`; её же пишет `manifest.json`.
 
 ## Главная страница
 
@@ -111,7 +113,7 @@ scripts/hash-password.ts          — генерация ADMIN_PASSWORD_HASH
 - У проектов есть переключатель «Опубликован».
 - Формы — SvelteKit form actions с `use:enhance`; без JS тоже работают. Валидация по Zod-схемам на сервере, ошибки под полями, введённые значения сохраняются при ошибке.
 - Теги вводятся одной строкой через запятую, пустые и повторяющиеся отбрасываются.
-- Иконка стека выбирается из пяти иконок системы.
+- Иконка стека выбирается из шести иконок системы (`ai` — искра из макета).
 - Скриншот проекта: поле загрузки с превью и кнопкой «Удалить картинку».
 
 ### Картинки
@@ -134,10 +136,10 @@ scripts/hash-password.ts          — генерация ADMIN_PASSWORD_HASH
 - **Экспорт** отдаёт `portfolio-backup-YYYY-MM-DD.zip`: `portfolio.db` (снимок через `VACUUM INTO` во временный файл), папку `uploads/` и `manifest.json` (версия формата, последняя применённая миграция, дата).
 - **Импорт** — архив до 100 МБ:
   1. Распаковка во временную папку внутри `DATA_DIR`. Отклоняются абсолютные пути, `..`, симлинки и любые файлы, кроме `manifest.json`, `portfolio.db` и `uploads/*.webp`.
-  2. Проверка: `manifest.json` читается, `portfolio.db` открывается как SQLite, проходит `PRAGMA integrity_check`, содержит таблицу `settings`, а его миграция не новее текущей версии приложения.
+  2. Проверка: `manifest.json` читается, `portfolio.db` открывается как SQLite, проходит `PRAGMA integrity_check`, содержит таблицу `settings`, а его `user_version` не новее текущей версии приложения; каждая картинка, на которую ссылается `projects.image`, есть в `uploads/`.
   3. Автобэкап текущего состояния в `/data/backups/`.
   4. Закрытие соединения, замена базы и папки `uploads/` через переименование, повторное открытие, применение миграций, удаление всех сессий кроме текущей.
-  5. При ошибке на шагах 1–3 текущие данные не меняются; при ошибке на шаге 4 автоматически восстанавливается автобэкап из шага 3.
+  5. При ошибке на шагах 1–3 текущие данные не меняются; при ошибке на шаге 4 исходные база и `uploads/` возвращаются на место.
 - **Автобэкапы**: архивы того же формата в `/data/backups/`, хранятся 10 последних. Создаются перед импортом и по кнопке «Сделать бэкап сейчас»; у каждого есть «Скачать» и «Восстановить» (восстановление идёт по тому же пути, что и импорт).
 
 ### Внешний вид админки

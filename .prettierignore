@@ -7,3 +7,9 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Generated and data
+/drizzle/
+/e2e/.data/
+/docs/
+/.superpowers/
