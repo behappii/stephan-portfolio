@@ -22,3 +22,24 @@ test('стек, проекты и подход выводятся из базы'
 	).toBeAttached();
 	await expect(page.locator('#approach li')).toHaveCount(4);
 });
+
+test('контакты, футер и SEO', async ({ page }) => {
+	await page.goto('/');
+	await expect(page.getByRole('heading', { name: 'Есть идея? Давайте соберём её' })).toBeVisible();
+	await expect(page.getByText('04 · контакты')).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Telegram ↗' })).toHaveAttribute(
+		'href',
+		'https://t.me/'
+	);
+	await expect(page.getByText('© [год] Степан')).toBeVisible();
+	await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+		'content',
+		'behappii — веб-разработчик Степан'
+	);
+});
+
+test('неизвестный адрес — страница 404', async ({ page }) => {
+	const res = await page.goto('/nope');
+	expect(res?.status()).toBe(404);
+	await expect(page.getByRole('heading', { name: 'Такой страницы нет' })).toBeVisible();
+});
