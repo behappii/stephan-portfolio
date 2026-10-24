@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200.00 200.00" role="img" aria-label="behappii">
+  <title>behappii</title>
+  <defs>
+    <radialGradient id="f-body" gradientUnits="userSpaceOnUse" cx="100" cy="220" r="238">
+      <stop offset="0" stop-color="#E2D4FF"/>
+      <stop offset="0.45" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#4C1D95"/>
+    </radialGradient>
+    <linearGradient id="f-gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="f-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.9" stdDeviation="1.9" flood-color="#280A5A" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="98.5" fill="url(#f-body)" stroke="#4C1D95" stroke-width="3"/>
+  <ellipse cx="100" cy="35" rx="55" ry="20" fill="url(#f-gloss)"/>
+  <g filter="url(#f-shadow)">
+    <path fill="#E4D9FF" d="M67.93 117.54 44.31 108.26Q40.34 106.72 40.34 102.62Q40.34 100.58 41.34 99.23Q42.33 97.89 44.31 97.12L67.93 87.84Q69.46 87.26 70.62 87.65Q71.77 88.03 72.44 89.02Q73.11 90.02 73.21 91.23Q73.3 92.45 72.7 93.5Q72.09 94.56 70.62 95.14L43.67 105.5V99.94L70.62 110.3Q72.09 110.88 72.7 111.94Q73.3 112.99 73.21 114.18Q73.11 115.36 72.44 116.35Q71.77 117.34 70.62 117.73Q69.46 118.11 67.93 117.54Z"/>
+    <rect x="77.11" y="75.50" width="9" height="49" rx="4.5" fill="#FFFFFF"/>
+    <rect x="94.11" y="75.50" width="9" height="49" rx="4.5" fill="#FFFFFF"/>
+    <path fill="#E4D9FF" d="M115.37 122.46Q114.79 124.13 113.64 124.9Q112.49 125.66 111.14 125.63Q109.8 125.6 108.68 124.93Q107.56 124.26 107.05 122.94Q106.54 121.63 107.05 119.9L121.26 75.62Q121.77 73.95 122.95 73.18Q124.14 72.42 125.45 72.45Q126.76 72.48 127.91 73.15Q129.06 73.82 129.58 75.1Q130.09 76.38 129.51 78.18Z M134.63 117.54Q133.1 118.11 131.98 117.73Q130.86 117.34 130.15 116.35Q129.45 115.36 129.38 114.18Q129.32 112.99 129.93 111.94Q130.54 110.88 131.94 110.3L158.95 99.94V105.5L131.94 95.14Q130.54 94.56 129.93 93.5Q129.32 92.45 129.38 91.23Q129.45 90.02 130.15 89.02Q130.86 88.03 131.98 87.65Q133.1 87.26 134.63 87.84L158.25 97.12Q162.22 98.66 162.22 102.62Q162.22 104.67 161.26 106.05Q160.3 107.42 158.25 108.26Z"/>
+  </g>
+</svg>
