@@ -1,0 +1,280 @@
+/* Разделы, где карточки сменяют друг друга при прокрутке. Без поддержки
+   animation-timeline и при «уменьшить движение» остаётся обычная сетка. */
+.story-inner {
+	box-sizing: content-box;
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 96px 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+}
+:where(#projects) .story-inner {
+	padding: 64px 32px 96px;
+}
+:where(#approach) .story-inner {
+	padding: 64px 32px 112px;
+}
+:where(#stack) .story-track {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+	gap: 18px;
+}
+:where(#projects) .story-track {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr));
+	gap: 28px;
+}
+:where(#approach) .story-track {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+	gap: 20px;
+}
+
+@keyframes storyCard {
+	0% {
+		opacity: 0;
+		translate: 0 140px;
+		scale: 0.7;
+	}
+	22%,
+	78% {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+	100% {
+		opacity: 0;
+		translate: 0 -140px;
+		scale: 1.06;
+	}
+}
+@keyframes storyFirst {
+	0%,
+	78% {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+	100% {
+		opacity: 0;
+		translate: 0 -140px;
+		scale: 1.06;
+	}
+}
+@keyframes storyLast {
+	0% {
+		opacity: 0;
+		translate: 0 140px;
+		scale: 0.7;
+	}
+	22%,
+	100% {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+}
+@keyframes storyX {
+	0% {
+		opacity: 0;
+		translate: 100% 0;
+		scale: 0.92;
+	}
+	22%,
+	78% {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+	100% {
+		opacity: 0;
+		translate: -100% 0;
+		scale: 0.92;
+	}
+}
+@keyframes storyXFirst {
+	0%,
+	78% {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+	100% {
+		opacity: 0;
+		translate: -100% 0;
+		scale: 0.92;
+	}
+}
+@keyframes storyXLast {
+	0% {
+		opacity: 0;
+		translate: 100% 0;
+		scale: 0.92;
+	}
+	22%,
+	100% {
+		opacity: 1;
+		translate: 0 0;
+		scale: 1;
+	}
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) and (max-height: 1400px) {
+		.story {
+			height: calc(var(--n) * 80vh + 100vh);
+			view-timeline-name: --story;
+		}
+		.story .story-inner {
+			position: sticky;
+			top: 0;
+			height: 100vh;
+			box-sizing: border-box;
+			padding-top: 64px;
+			padding-bottom: 40px;
+			gap: 24px;
+		}
+		.story .story-track {
+			display: block;
+			position: relative;
+			flex: 1;
+			min-height: 0;
+		}
+		.story-track > .story-card {
+			position: absolute;
+			inset: 0;
+			margin: auto;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			border-radius: 36px;
+			animation: storyCard linear both;
+			animation-timeline: --story;
+			animation-range: contain calc(var(--i) * 100% / var(--n)) contain
+				calc((var(--i) + 1) * 100% / var(--n));
+		}
+		.story-track > .story-card:first-child {
+			animation-name: storyFirst;
+		}
+		.story-track > .story-card:last-child {
+			animation-name: storyLast;
+		}
+		.story-track > .story-card:only-child {
+			animation: none;
+		}
+		#stack .story-track > .story-card {
+			animation-name: storyX;
+		}
+		#stack .story-track > .story-card:first-child {
+			animation-name: storyXFirst;
+		}
+		#stack .story-track > .story-card:last-child {
+			animation-name: storyXLast;
+		}
+
+		#stack .story-card,
+		#approach .story-card {
+			display: grid;
+			grid-template-columns: auto minmax(0, 1fr);
+			column-gap: 56px;
+			row-gap: 18px;
+			align-content: center;
+			align-items: start;
+			padding: 64px 72px;
+		}
+		#stack .story-card > .va-icon-tile {
+			grid-row: 1 / span 3;
+			width: 150px;
+			height: 150px;
+			border-radius: 40px;
+		}
+		#stack .story-card > .va-icon-tile > svg {
+			width: 72px;
+			height: 72px;
+		}
+		#approach .story-card > .va-orb {
+			grid-row: 1 / span 3;
+			width: 150px;
+			height: 150px;
+			font-size: 64px;
+		}
+		.story-card h3 {
+			font-size: clamp(36px, 4.4vw, 64px);
+			line-height: 1.05;
+		}
+		#stack .story-card > p,
+		#approach .story-card > p {
+			font-size: clamp(18px, 1.8vw, 24px);
+			max-width: 720px;
+		}
+		#stack .story-card > .va-tags {
+			grid-column: 2;
+			gap: 10px;
+		}
+		#stack .story-card > .va-tags > .va-tag {
+			font-size: 18px;
+			padding: 10px 20px;
+		}
+		#approach .story-card > .step-tech {
+			grid-column: 2;
+			font-size: 18px;
+		}
+		#projects .story-card {
+			display: grid;
+			grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+			gap: 8px;
+			padding: 16px;
+		}
+		#projects .story-card > .va-well {
+			height: auto;
+			min-height: 0;
+		}
+		#projects .story-card > .va-project-body {
+			padding: 40px 36px;
+			justify-content: center;
+			gap: 18px;
+		}
+		#projects .story-card p {
+			font-size: 20px;
+		}
+		#projects .story-card .va-project-year {
+			font-size: 18px;
+		}
+		#projects .story-card .va-tags > .va-tag {
+			font-size: 16px;
+			padding: 8px 16px;
+		}
+
+		@media (max-width: 760px) {
+			#stack .story-card,
+			#approach .story-card,
+			#projects .story-card {
+				grid-template-columns: minmax(0, 1fr);
+				padding: 32px 28px;
+			}
+			#stack .story-card > .va-icon-tile,
+			#approach .story-card > .va-orb {
+				grid-row: auto;
+				width: 88px;
+				height: 88px;
+			}
+			#approach .story-card > .va-orb {
+				font-size: 40px;
+			}
+			#stack .story-card > .va-tags,
+			#approach .story-card > .step-tech {
+				grid-column: auto;
+			}
+			#projects .story-card > .va-well {
+				min-height: 200px;
+			}
+			#projects .story-card > .va-project-body {
+				padding: 20px 12px;
+			}
+		}
+	}
+}

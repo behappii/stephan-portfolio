@@ -2,6 +2,7 @@
 @import '../lib/styles/tokens.css';
 @import '../lib/styles/theme.css';
 @import '../lib/styles/components.css';
+@import '../lib/styles/story.css';
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
