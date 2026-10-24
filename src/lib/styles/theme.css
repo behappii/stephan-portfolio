@@ -1,0 +1,39 @@
+/* Утилиты Tailwind поверх токенов Violet Aero.
+   Цвета ссылаются на переменные из tokens.css; радиусы, тени и шрифты совпадают
+   с ними по имени и значению, поэтому tokens.css остаётся единственным источником. */
+@theme inline {
+	--color-sky-50: var(--sky-50);
+	--color-sky-100: var(--sky-100);
+	--color-sky-200: var(--sky-200);
+	--color-sky-300: var(--sky-300);
+	--color-sky-400: var(--sky-400);
+	--color-ink: var(--ink);
+	--color-ink-body: var(--ink-body);
+	--color-ink-nav: var(--ink-nav);
+	--color-ink-muted: var(--ink-muted);
+	--color-lilac: var(--lilac);
+	--color-lilac-line: var(--lilac-line);
+	--color-lilac-tint: var(--lilac-tint);
+	--color-violet-500: var(--violet-500);
+	--color-violet-600: var(--violet-600);
+	--color-violet-700: var(--violet-700);
+	--color-violet-800: var(--violet-800);
+	--color-violet-900: var(--violet-900);
+	--color-dusk: var(--dusk);
+	--color-on-violet: var(--on-violet);
+	--color-on-dusk-muted: var(--on-dusk-muted);
+	--color-glass: var(--glass);
+	--color-glass-fade: var(--glass-fade);
+	--color-link: var(--link);
+}
+
+@theme {
+	--font-display: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+	--font-body: 'Open Sans', 'Segoe UI', system-ui, sans-serif;
+	--radius-icon: 16px;
+	--radius-xl: 24px;
+	--radius-2xl: 28px;
+	--radius-pill: 999px;
+	--shadow-glass: 0 12px 34px rgba(91, 48, 180, 0.15), inset 0 1px 0 #ffffff;
+	--shadow-focus-ring: 0 0 0 3px #ffffff, 0 0 0 5px #6d28d9;
+}

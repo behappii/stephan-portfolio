@@ -1,3 +1,28 @@
 @import 'tailwindcss';
+@import '../lib/styles/tokens.css';
+@import '../lib/styles/theme.css';
+@import '../lib/styles/components.css';
+
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+html {
+	scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+a {
+	color: var(--link);
+	text-decoration: none;
+}
+a:hover {
+	color: var(--link-hover);
+}
+:focus-visible {
+	outline: 2px solid transparent;
+	box-shadow: var(--focus-ring);
+	border-radius: var(--radius-sm);
+}

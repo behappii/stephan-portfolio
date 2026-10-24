@@ -15,8 +15,8 @@
 		use:enhance
 		class="va-glass va-glass-2xl va-glass-pad-lg flex w-full max-w-sm flex-col gap-4"
 	>
-		<h1 class="font-display text-ink text-3xl font-black">Вход</h1>
-		<label class="text-ink-nav flex flex-col gap-1 text-sm font-semibold">
+		<h1 class="font-display text-3xl font-black text-ink">Вход</h1>
+		<label class="flex flex-col gap-1 text-sm font-semibold text-ink-nav">
 			Пароль
 			<input
 				name="password"
