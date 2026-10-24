@@ -18,7 +18,7 @@
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content={c.settings.seoTitle} />
 	<meta property="og:description" content={c.settings.seoDescription} />
-	<meta property="og:image" content={new URL(logo, page.url).href} />
+	<meta property="og:image" content={new URL(logo, page.url.origin).href} />
 </svelte:head>
 
 <div id="top" class="va-sky page">
