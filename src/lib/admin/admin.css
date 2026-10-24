@@ -1,0 +1,42 @@
+.admin-input {
+	min-height: 44px;
+	width: 100%;
+	border-radius: var(--radius-md);
+	border: 1px solid var(--lilac-line);
+	background: var(--glass-edge);
+	color: var(--ink);
+	font: inherit;
+	font-size: 15px;
+	padding: 10px 14px;
+}
+.admin-input:focus {
+	border-color: var(--violet-600);
+	box-shadow: var(--focus-ring);
+	outline: none;
+}
+.admin-input[aria-invalid='true'] {
+	border-color: var(--violet-800);
+}
+.admin-panel {
+	box-sizing: border-box;
+	background: linear-gradient(180deg, var(--glass), var(--glass-fade));
+	border: 1px solid var(--glass-edge);
+	box-shadow: var(--shadow-glass);
+	border-radius: var(--radius-xl);
+	padding: 24px;
+}
+.admin-h1 {
+	margin: 0;
+	font-family: var(--font-display);
+	font-weight: 900;
+	font-size: 34px;
+	line-height: 1.1;
+	color: var(--ink);
+}
+.admin-h2 {
+	margin: 0;
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: 21px;
+	color: var(--ink);
+}

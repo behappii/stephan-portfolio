@@ -7,13 +7,20 @@ test('без сессии /admin ведёт на вход', async ({ page }) => 
 });
 
 test('POST в админку без сессии не выполняется', async ({ request }) => {
-	const res = await request.post('/admin/settings', {
+	const html = await request.post('/admin/settings', {
 		form: { name: 'Взлом' },
-		headers: { origin: 'http://localhost:4173' },
+		headers: { origin: 'http://localhost:4173', accept: 'text/html' },
 		maxRedirects: 0
 	});
-	expect(res.status()).toBe(303);
-	expect(res.headers().location).toBe('/admin/login');
+	expect(html.status()).toBe(303);
+	expect(html.headers().location).toBe('/admin/login');
+
+	const json = await request.post('/admin/settings', {
+		form: { name: 'Взлом' },
+		headers: { origin: 'http://localhost:4173', accept: 'application/json' },
+		maxRedirects: 0
+	});
+	expect(await json.json()).toMatchObject({ type: 'redirect', location: '/admin/login' });
 });
 
 test('неверный пароль показывает ошибку', async ({ page }) => {

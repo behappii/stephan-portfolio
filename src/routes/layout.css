@@ -3,6 +3,7 @@
 @import '../lib/styles/theme.css';
 @import '../lib/styles/components.css';
 @import '../lib/styles/story.css';
+@import '../lib/admin/admin.css';
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
