@@ -8,16 +8,19 @@ export default defineConfig({
 	testDir: 'e2e',
 	testMatch: '**/*.test.ts',
 	workers: 1,
-	use: { baseURL: 'http://localhost:4173' },
+	// Как за прокси: протокол приходит в заголовке, иначе adapter-node считает его https и режет формы по CSRF.
+	use: { baseURL: 'http://localhost:4173', extraHTTPHeaders: { 'x-forwarded-proto': 'http' } },
 	webServer: {
-		command: 'rm -rf e2e/.data && pnpm build && pnpm preview --port 4173 --strictPort',
+		// Тот же сервер adapter-node, что и в Docker, а не vite preview.
+		command: 'rm -rf e2e/.data && pnpm build && node build',
 		port: 4173,
 		reuseExistingServer: false,
 		timeout: 180_000,
 		env: {
 			DATA_DIR: 'e2e/.data',
 			ADMIN_PASSWORD_HASH: passwordHash,
-			ORIGIN: 'http://localhost:4173',
+			PORT: '4173',
+			PROTOCOL_HEADER: 'x-forwarded-proto',
 			BODY_SIZE_LIMIT: '100M'
 		}
 	}

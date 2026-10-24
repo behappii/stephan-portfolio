@@ -128,7 +128,7 @@ scripts/hash-password.ts          — генерация ADMIN_PASSWORD_HASH
 - Один пользователь. Пароль сверяется с `ADMIN_PASSWORD_HASH` (argon2id); хеш создаёт `pnpm hash-password`.
 - Сессия — случайный токен в cookie `session` (`httpOnly`, `secure` в продакшене, `sameSite=lax`, `path=/`), в таблице `sessions` хранится его хеш; срок жизни 30 дней. Просроченные сессии удаляются при входе.
 - Rate limit: 5 неудачных попыток входа с одного IP за 15 минут, счётчик в памяти процесса. IP берётся через `getClientAddress()` (за обратным прокси задаётся `ADDRESS_HEADER`).
-- CSRF — встроенная проверка origin SvelteKit; переменная `ORIGIN` обязательна в продакшене.
+- CSRF — встроенная проверка origin SvelteKit. Origin adapter-node собирает из заголовков прокси `PROTOCOL_HEADER` (`x-forwarded-proto`) и `HOST_HEADER` (`x-forwarded-host`); без них протокол считается `https`. Переменной `ORIGIN` в adapter-node 6 нет.
 - `/admin` закрыт от индексации: `<meta name="robots" content="noindex">` и `Disallow: /admin` в `static/robots.txt`.
 
 ### Экспорт и импорт
@@ -156,7 +156,7 @@ scripts/hash-password.ts          — генерация ADMIN_PASSWORD_HASH
 
 - Многостадийный `Dockerfile` на `node:24-slim`: стадия сборки (`pnpm install`, `pnpm build`, `pnpm prune --prod`) и стадия запуска от непривилегированного пользователя.
 - Том `/data` (база, `uploads/`, `backups/`).
-- `docker-compose.yml`: сервис `web`, порт 3000, переменные `ADMIN_PASSWORD_HASH`, `ORIGIN`, `DATA_DIR=/data`, `BODY_SIZE_LIMIT=100M`, при необходимости `ADDRESS_HEADER`; `restart: unless-stopped`.
+- `docker-compose.yml`: сервис `web`, порт 3000, переменные `ADMIN_PASSWORD_HASH`, `PROTOCOL_HEADER`, `HOST_HEADER`, `ADDRESS_HEADER`, `XFF_DEPTH`, `DATA_DIR=/data`, `BODY_SIZE_LIMIT=100M`; `restart: unless-stopped`.
 - `.env.example` с описанием переменных; README с шагами развёртывания и бэкапа.
 - HTTPS обеспечивает обратный прокси на VPS (Caddy или nginx); в репозитории — пример конфига Caddy.
 
