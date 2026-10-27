@@ -31,6 +31,21 @@
 		['36%', 40, '45%', 21, -18, false],
 		['60%', 52, '35%', 18, -16, true]
 	];
+
+	// Пузырёк лопается по клику, а через мгновение вылетает заново снизу:
+	// новое поколение пересоздаёт элемент, и подъём начинается с начала.
+	const POP_MS = 350;
+	let generation = $state(BUBBLES.map(() => 0));
+	let popping = $state(BUBBLES.map(() => false));
+
+	function pop(i: number) {
+		if (popping[i]) return;
+		popping[i] = true;
+		setTimeout(() => {
+			popping[i] = false;
+			generation[i] += 1;
+		}, POP_MS);
+	}
 </script>
 
 <section
@@ -41,12 +56,21 @@
 >
 	<div class="wave" aria-hidden="true"></div>
 	<div class="wave-line" aria-hidden="true"></div>
+	<!-- Пузырьки — украшение: хлопать их можно мышью и пальцем, для читалок их нет. -->
 	<div aria-hidden="true">
 		{#each BUBBLES as [left, size, rest, dur, delay, sway], i (i)}
-			<span
-				class="rise {sway ? 'sway-b' : ''}"
-				style="--left: {left}; --size: {size}px; --rest: {rest}; --dur: {dur}s; --delay: {delay}s"
-			></span>
+			{#key generation[i]}
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<span
+					class="rise {sway ? 'sway-b' : ''}"
+					class:respawn={generation[i] > 0}
+					style="--left: {left}; --size: {size}px; --rest: {rest}; --dur: {dur}s"
+					style:--delay="{generation[i] ? 0 : delay}s"
+					onpointerdown={() => pop(i)}
+				>
+					<span class="bubble" class:popping={popping[i]}></span>
+				</span>
+			{/key}
 		{/each}
 	</div>
 
@@ -124,6 +148,17 @@
 		left: var(--left);
 		width: var(--size);
 		height: var(--size);
+		cursor: pointer;
+		will-change: transform;
+		animation: bubbleRiseA calc(var(--dur) * var(--slow, 1)) linear
+			calc(var(--delay) * var(--slow, 1)) infinite;
+	}
+	.rise.sway-b {
+		animation-name: bubbleRiseB;
+	}
+	.bubble {
+		position: absolute;
+		inset: 0;
 		border-radius: 50%;
 		background: radial-gradient(
 			circle at 32% 28%,
@@ -134,12 +169,45 @@
 		);
 		border: 1px solid rgba(255, 255, 255, 0.85);
 		box-shadow: inset 0 -6px 14px rgba(124, 58, 237, 0.22);
-		will-change: transform;
-		animation: bubbleRiseA calc(var(--dur) * var(--slow, 1)) linear
-			calc(var(--delay) * var(--slow, 1)) infinite;
 	}
-	.rise.sway-b {
-		animation-name: bubbleRiseB;
+	/* Кольцо, которое расходится от лопнувшего пузырька. */
+	.bubble::after {
+		content: '';
+		position: absolute;
+		inset: -1px;
+		border-radius: 50%;
+		border: 3px solid rgba(167, 139, 250, 0.85);
+		opacity: 0;
+	}
+	.bubble.popping {
+		animation: bubblePop 0.25s ease-out forwards;
+	}
+	.bubble.popping::after {
+		animation: bubbleRing 0.35s ease-out forwards;
+	}
+	@keyframes bubblePop {
+		to {
+			transform: scale(1.3);
+			opacity: 0;
+			background: transparent;
+			border-color: transparent;
+			box-shadow: none;
+		}
+	}
+	@keyframes bubbleFade {
+		to {
+			opacity: 0;
+		}
+	}
+	@keyframes bubbleRing {
+		from {
+			opacity: 1;
+			transform: scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: scale(1.8);
+		}
 	}
 	@keyframes bubbleRiseA {
 		0% {
@@ -206,12 +274,25 @@
 			animation: none;
 			top: var(--rest);
 		}
+		/* Пузырьки стоят на месте: лопнувший тихо проявляется снова. */
+		.bubble.popping {
+			animation: bubbleFade 0.25s ease-out forwards;
+		}
+		.bubble.popping::after {
+			animation: none;
+		}
+		.rise.respawn .bubble {
+			animation: bubbleFade 0.6s ease-in 1.5s reverse both;
+		}
 		.wave,
 		.wave-line {
 			animation: none;
 		}
 	}
+	/* Блок с текстом и картинкой лежит поверх пузырьков: клики по пустому месту
+	   проходят к пузырькам, а текст, кнопки и картинка ловят их как обычно. */
 	.hero-inner {
+		pointer-events: none;
 		box-sizing: content-box;
 		position: relative;
 		z-index: 1;
@@ -228,6 +309,10 @@
 		.hero-inner {
 			padding-top: 32px;
 		}
+	}
+	.hero-copy > *,
+	.hero-inner > :global(.art) {
+		pointer-events: auto;
 	}
 	.hero-copy {
 		flex: 1 1 520px;
