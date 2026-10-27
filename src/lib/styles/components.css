@@ -305,6 +305,72 @@ body {
 	box-shadow: var(--shadow-glass-hover);
 }
 
+/* Карточка главной: при наведении мышью наклоняется к курсору (переменные ставит
+   tilt.ts), по стеклу бежит блик, вокруг — ореол, иконка или шар подпрыгивает. */
+.va-hover {
+	position: relative;
+	transition:
+		transform 0.2s ease-out,
+		box-shadow 0.25s ease,
+		border-color 0.25s ease;
+}
+.va-hover::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.25s ease;
+	background: radial-gradient(
+		circle at var(--mx, 50%) var(--my, 30%),
+		rgba(255, 255, 255, 0.4),
+		transparent 40%
+	);
+}
+.va-hover .va-icon-tile,
+.va-hover-orb .va-orb {
+	transition:
+		transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+		box-shadow 0.35s ease;
+}
+.va-hover .va-tag-pearl {
+	transition:
+		background 0.25s ease,
+		color 0.25s ease,
+		border-color 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+	.va-hover:hover {
+		transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px);
+		border-color: var(--lilac);
+		box-shadow:
+			0 0 0 4px rgba(167, 139, 250, 0.35),
+			0 24px 44px rgba(109, 40, 217, 0.3);
+	}
+	.va-hover:hover::after {
+		opacity: 1;
+	}
+	.va-hover:hover .va-icon-tile,
+	.va-hover-orb:has(.va-hover:hover) .va-orb {
+		transform: scale(1.15) rotate(-8deg);
+	}
+	.va-hover:hover .va-tag-pearl {
+		background: linear-gradient(180deg, var(--violet-gloss-top), var(--violet-gloss-low));
+		border-color: transparent;
+		color: var(--on-violet);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.va-hover:hover {
+		transform: none;
+	}
+	.va-hover:hover .va-icon-tile,
+	.va-hover-orb:has(.va-hover:hover) .va-orb {
+		transform: none;
+	}
+}
+
 /* GlassNav */
 .va-nav {
 	display: flex;

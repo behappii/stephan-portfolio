@@ -5,6 +5,7 @@
 	import SectionHeader from '#lib/ui/SectionHeader.svelte';
 	import Tag from '#lib/ui/Tag.svelte';
 	import Tags from '#lib/ui/Tags.svelte';
+	import { tilt } from '#lib/ui/tilt.ts';
 
 	let {
 		items,
@@ -109,7 +110,8 @@
 						href={p.url ?? undefined}
 						target={p.url ? '_blank' : undefined}
 						rel={p.url ? 'noopener' : undefined}
-						class="carousel-card va-glass va-glass-2xl va-glass-pad-sm va-glass-lift va-project"
+						{@attach tilt}
+						class="carousel-card va-glass va-glass-2xl va-glass-pad-sm va-hover va-project"
 					>
 						<div class="va-well">
 							{#if p.image}
@@ -170,7 +172,7 @@
 
 	.carousel-wrap {
 		/* Лента заходит на поля страницы, чтобы тени карточек и край следующей не обрезались. */
-		margin: -16px -32px -24px;
+		margin: -24px -32px -40px;
 	}
 	.carousel {
 		--per: 3;
@@ -180,7 +182,7 @@
 		grid-auto-flow: column;
 		grid-auto-columns: calc((100% - var(--peek) - (var(--per) - 1) * var(--gap)) / var(--per));
 		gap: var(--gap);
-		padding: 16px 32px 24px;
+		padding: 24px 32px 40px;
 		overflow-x: auto;
 		overscroll-behavior-x: contain;
 		scroll-snap-type: x mandatory;
