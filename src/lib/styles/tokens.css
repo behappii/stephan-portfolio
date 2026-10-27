@@ -34,8 +34,8 @@
 	--link: var(--violet-700);
 	--link-hover: var(--violet-900);
 	/* Шрифты */
-	--font-display: 'Nunito', 'Segoe UI', system-ui, sans-serif;
-	--font-body: 'Open Sans', 'Segoe UI', system-ui, sans-serif;
+	--font-display: 'Nunito Variable', 'Segoe UI', system-ui, sans-serif;
+	--font-body: 'Open Sans Variable', 'Segoe UI', system-ui, sans-serif;
 	/* Отступы */
 	--space-1: 4px;
 	--space-2: 8px;

@@ -43,3 +43,16 @@ test('неизвестный адрес — страница 404', async ({ page
 	expect(res?.status()).toBe(404);
 	await expect(page.getByRole('heading', { name: 'Такой страницы нет' })).toBeVisible();
 });
+
+test('шрифты со своего сервера, у страницы есть основная область', async ({ page }) => {
+	const external: string[] = [];
+	page.on('request', (req) => {
+		if (!req.url().startsWith('http://localhost')) external.push(req.url());
+	});
+	await page.goto('/', { waitUntil: 'networkidle' });
+	expect(external).toEqual([]);
+	await expect(page.getByRole('main')).toHaveCount(1);
+	expect(
+		await page.evaluate(() => document.fonts.check('900 40px "Nunito Variable"', 'Ваша'))
+	).toBe(true);
+});

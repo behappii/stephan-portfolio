@@ -24,27 +24,29 @@
 
 <div id="top" class="va-sky page">
 	<SiteNav nav={c.nav} />
-	<Hero settings={c.settings} hasProjects={c.projects.length > 0} />
-	{#if c.eyebrows.stack}
-		<Stack
-			items={c.stack}
-			eyebrow={c.eyebrows.stack}
-			title={c.settings.stackTitle}
-			subtitle={c.settings.stackSubtitle}
-		/>
-	{/if}
-	{#if c.eyebrows.projects}
-		<Projects
-			items={c.projects}
-			eyebrow={c.eyebrows.projects}
-			title={c.settings.projectsTitle}
-			githubUrl={c.githubUrl}
-		/>
-	{/if}
-	{#if c.eyebrows.approach}
-		<Approach items={c.approach} eyebrow={c.eyebrows.approach} title={c.settings.approachTitle} />
-	{/if}
-	<Contact settings={c.settings} links={c.links} eyebrow={c.eyebrows.contact ?? ''} />
+	<main>
+		<Hero settings={c.settings} hasProjects={c.projects.length > 0} />
+		{#if c.eyebrows.stack}
+			<Stack
+				items={c.stack}
+				eyebrow={c.eyebrows.stack}
+				title={c.settings.stackTitle}
+				subtitle={c.settings.stackSubtitle}
+			/>
+		{/if}
+		{#if c.eyebrows.projects}
+			<Projects
+				items={c.projects}
+				eyebrow={c.eyebrows.projects}
+				title={c.settings.projectsTitle}
+				githubUrl={c.githubUrl}
+			/>
+		{/if}
+		{#if c.eyebrows.approach}
+			<Approach items={c.approach} eyebrow={c.eyebrows.approach} title={c.settings.approachTitle} />
+		{/if}
+		<Contact settings={c.settings} links={c.links} eyebrow={c.eyebrows.contact ?? ''} />
+	</main>
 </div>
 
 <style>

@@ -28,8 +28,8 @@
 }
 
 @theme {
-	--font-display: 'Nunito', 'Segoe UI', system-ui, sans-serif;
-	--font-body: 'Open Sans', 'Segoe UI', system-ui, sans-serif;
+	--font-display: 'Nunito Variable', 'Segoe UI', system-ui, sans-serif;
+	--font-body: 'Open Sans Variable', 'Segoe UI', system-ui, sans-serif;
 	--radius-icon: 16px;
 	--radius-xl: 24px;
 	--radius-2xl: 28px;
