@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { dataDir, migrationsDir } from './config';
+import { dataDir, migrationsDir, siteOrigin } from './config';
 
 describe('config', () => {
 	const saved = { ...process.env };
@@ -20,5 +20,13 @@ describe('config', () => {
 		process.env.MIGRATIONS_DIR = '/app/drizzle';
 		expect(dataDir()).toBe('/srv/portfolio');
 		expect(migrationsDir()).toBe('/app/drizzle');
+	});
+
+	it('адрес сайта берёт из SITE_URL, иначе из запроса', () => {
+		const req = new URL('http://localhost:3000/some?x=1');
+		delete process.env.SITE_URL;
+		expect(siteOrigin(req)).toBe('http://localhost:3000');
+		process.env.SITE_URL = 'https://behappii.ru/';
+		expect(siteOrigin(req)).toBe('https://behappii.ru');
 	});
 });

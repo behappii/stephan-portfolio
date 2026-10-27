@@ -9,3 +9,12 @@ export function dataDir(): string {
 export function migrationsDir(): string {
 	return path.resolve(process.env.MIGRATIONS_DIR ?? 'drizzle');
 }
+
+/**
+ * Адрес сайта для canonical, sitemap и robots.txt. SITE_URL задаётся на сервере,
+ * чтобы у адресов с www и без него был один канонический; иначе берётся адрес запроса.
+ */
+export function siteOrigin(requestUrl: URL): string {
+	const site = process.env.SITE_URL?.trim();
+	return site ? new URL(site).origin : requestUrl.origin;
+}

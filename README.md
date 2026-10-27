@@ -23,7 +23,7 @@ pnpm dev                      # http://localhost:5173, админка — /admin
 ## Развёртывание через Dokploy
 
 1. В Dokploy создайте сервис типа Compose из этого репозитория, ветка `main`, файл `docker-compose.yml`.
-2. Во вкладке Environment задайте переменные по образцу `.env.example`: Dokploy положит их в `.env` рядом с compose-файлом.
+2. Во вкладке Environment задайте переменные по образцу `.env.example`: Dokploy положит их в `.env` рядом с compose-файлом. Обязательно укажите `SITE_URL` — адрес сайта для canonical, `sitemap.xml` и `robots.txt`.
 3. Во вкладке Domains добавьте домен: сервис `web`, порт `3000`, HTTPS через Let's Encrypt.
 4. Deploy. Миграции применяются при старте, база и картинки живут в томе `portfolio-data`.
 

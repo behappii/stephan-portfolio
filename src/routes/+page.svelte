@@ -1,25 +1,49 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import logo from '#lib/assets/logo/behappii-logo.svg';
+	import ogImage from '#lib/assets/og/og-image.jpg';
 	import Approach from '#lib/sections/Approach.svelte';
 	import Contact from '#lib/sections/Contact.svelte';
 	import Hero from '#lib/sections/Hero.svelte';
 	import Projects from '#lib/sections/Projects.svelte';
 	import SiteNav from '#lib/sections/SiteNav.svelte';
 	import Stack from '#lib/sections/Stack.svelte';
+	import { jsonLdScript, personJsonLd } from '#lib/seo.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 	const c = $derived(data.content);
+	const url = $derived(`${data.origin}/`);
+	const jsonLd = $derived(
+		jsonLdScript(
+			personJsonLd({
+				origin: data.origin,
+				name: c.settings.name,
+				city: c.settings.city,
+				email: c.settings.email,
+				description: c.settings.seoDescription,
+				links: c.links
+			})
+		)
+	);
 </script>
 
 <svelte:head>
 	<title>{c.settings.seoTitle}</title>
 	<meta name="description" content={c.settings.seoDescription} />
+	<link rel="canonical" href={url} />
 	<meta property="og:type" content="website" />
+	<meta property="og:url" content={url} />
+	<meta property="og:locale" content="ru_RU" />
+	<meta property="og:site_name" content="behappii.ru" />
 	<meta property="og:title" content={c.settings.seoTitle} />
 	<meta property="og:description" content={c.settings.seoDescription} />
-	<meta property="og:image" content={new URL(logo, page.url.origin).href} />
+	<meta property="og:image" content={new URL(ogImage, data.origin).href} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={c.settings.seoTitle} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<!-- Данные экранированы в jsonLdScript. -->
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	{@html jsonLd}
 </svelte:head>
 
 <div id="top" class="va-sky page">
