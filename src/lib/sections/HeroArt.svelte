@@ -249,4 +249,76 @@
 		right: 8px;
 		top: 474px;
 	}
+
+	/* Телефон: окно Tauri убираем, браузер и телефон крупнее, размеры от ширины экрана. */
+	@media (max-width: 600px) {
+		.art {
+			flex-basis: 100%;
+			height: auto;
+			aspect-ratio: 1 / 0.92;
+		}
+		.art-glow {
+			left: 8%;
+			top: 6%;
+			width: 72%;
+			height: auto;
+			aspect-ratio: 1;
+		}
+		.art-glow-shine {
+			left: calc(8% + 30px);
+			top: 8%;
+			width: 52%;
+			height: 24%;
+		}
+		.art-browser {
+			top: 4%;
+			width: 76%;
+			height: 60%;
+		}
+		.art-browser :global(.va-window-client) {
+			margin: 8px;
+			padding: 12px;
+			gap: 8px;
+		}
+		.art-browser :global(.va-window-url) {
+			font-size: 11px;
+		}
+		.art-browser :global(.va-tag) {
+			right: auto;
+			left: 14px;
+			bottom: 14px;
+		}
+		.tile {
+			height: 40px;
+		}
+		.art-app {
+			display: none;
+		}
+		.art-phone {
+			top: 4%;
+			width: 38%;
+			height: auto;
+			aspect-ratio: 172 / 350;
+			padding: 7px;
+			border-radius: 26px;
+		}
+		.phone-screen {
+			border-radius: 20px;
+			gap: 7px;
+			padding: 10px;
+		}
+		.phone-hero {
+			height: 30%;
+			flex: none;
+			border-radius: 14px;
+		}
+		.phone-cta {
+			height: 26px;
+		}
+		.art-phone-tag {
+			top: auto;
+			right: 0;
+			bottom: 0;
+		}
+	}
 </style>
