@@ -36,10 +36,10 @@ test('меню на телефоне открывается, закрывает�
 test('картинка первого экрана на телефоне помещается в свой блок', async ({ page }) => {
 	await page.goto('/');
 	const art = page.locator('.art');
-	await expect(art.locator('.art-app')).toBeHidden();
 	const artBox = (await art.boundingBox())!;
-	for (const part of ['.art-browser', '.art-phone']) {
+	for (const part of ['.art-browser', '.art-app', '.art-phone']) {
 		const box = (await art.locator(part).boundingBox())!;
+		await expect(art.locator(part)).toBeVisible();
 		expect(box.y + box.height).toBeLessThanOrEqual(artBox.y + artBox.height + 1);
 		expect(box.x + box.width).toBeLessThanOrEqual(375);
 	}

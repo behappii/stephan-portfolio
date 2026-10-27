@@ -234,12 +234,12 @@
 		);
 	}
 
-	/* Телефон: окно Tauri убираем, браузер и телефон крупнее, размеры от ширины экрана. */
+	/* Телефон: та же композиция, размеры от ширины экрана, детали окон компактнее. */
 	@media (max-width: 600px) {
 		.art {
 			flex-basis: 100%;
 			height: auto;
-			aspect-ratio: 1 / 0.84;
+			aspect-ratio: 1 / 0.95;
 		}
 		.art-glow {
 			left: 8%;
@@ -255,9 +255,9 @@
 			height: 24%;
 		}
 		.art-browser {
-			top: 4%;
+			top: 3%;
 			width: 76%;
-			height: 60%;
+			height: 52%;
 		}
 		.art-browser :global(.va-window-client) {
 			margin: 8px;
@@ -271,11 +271,30 @@
 			height: 40px;
 		}
 		.art-app {
-			display: none;
+			left: 6%;
+			width: 58%;
+			height: 34%;
+			border-radius: 10px;
+		}
+		.art-app :global(.va-window-bar) {
+			height: 20px;
+			min-height: 20px;
+		}
+		.app-client {
+			margin: 6px;
+		}
+		.app-side,
+		.app-main {
+			padding: 10px;
+			gap: 6px;
+		}
+		.app-side .bar,
+		.app-main .bar {
+			height: 6px;
 		}
 		.art-phone {
-			top: 4%;
-			width: 38%;
+			top: 18%;
+			width: 34%;
 			height: auto;
 			aspect-ratio: 172 / 350;
 			padding: 7px;
