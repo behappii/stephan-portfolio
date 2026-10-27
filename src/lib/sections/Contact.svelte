@@ -9,7 +9,6 @@
 </script>
 
 <section id="contact" aria-labelledby="contact-title" class="va-dusk contact">
-	<div class="contact-shine" aria-hidden="true"></div>
 	<Bubble size={110} tone="dusk" class="contact-bubble" style="right: 8%; top: 22%" />
 	<Bubble size={44} tone="dusk" class="contact-bubble" style="right: 22%; top: 56%" />
 	<Bubble size={26} tone="dusk" class="contact-bubble" style="right: 4%; bottom: 22%" />
@@ -39,21 +38,27 @@
 </section>
 
 <style>
+	/* Сверху раздел вырастает из фона страницы: градиент начинается с прозрачного,
+	   чтобы между подходом и контактами не было резкой границы. */
 	.contact {
+		--fade: 240px;
 		position: relative;
 		overflow: hidden;
 		background:
-			radial-gradient(ellipse 60% 80% at 80% 0%, rgba(196, 161, 255, 0.55), transparent 70%),
-			linear-gradient(180deg, var(--violet-600) 0%, var(--violet-800) 55%, var(--dusk) 100%);
-	}
-	.contact-shine {
-		position: absolute;
-		left: -10%;
-		top: -120px;
-		width: 120%;
-		height: 220px;
-		border-radius: 50%;
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+			radial-gradient(
+				ellipse 60% 260px at 80% calc(var(--fade) + 140px),
+				rgba(196, 161, 255, 0.55),
+				transparent 70%
+			),
+			linear-gradient(
+				180deg,
+				rgba(196, 181, 253, 0) 0,
+				var(--lilac) calc(var(--fade) * 0.35),
+				var(--violet-500) calc(var(--fade) * 0.7),
+				var(--violet-600) var(--fade),
+				var(--violet-800) 60%,
+				var(--dusk) 100%
+			);
 	}
 	:global(.contact-bubble) {
 		position: absolute;
@@ -63,7 +68,7 @@
 		position: relative;
 		max-width: 1240px;
 		margin: 0 auto;
-		padding: 128px 32px 96px;
+		padding: calc(var(--fade) + 48px) 32px 96px;
 		display: flex;
 		flex-direction: column;
 		gap: 40px;
