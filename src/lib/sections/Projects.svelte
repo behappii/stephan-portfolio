@@ -170,9 +170,11 @@
 		color: inherit;
 	}
 
+	/* Лента заходит на поля страницы, чтобы тени карточек (и при наведении тоже)
+	   и край следующей карточки не обрезались. По бокам — до самого края экрана. */
 	.carousel-wrap {
-		/* Лента заходит на поля страницы, чтобы тени карточек и край следующей не обрезались. */
-		margin: -24px -32px -40px;
+		--bleed: max(32px, (100vw - 1240px) / 2);
+		margin: -40px calc(-1 * var(--bleed)) -72px;
 	}
 	.carousel {
 		--per: 3;
@@ -182,11 +184,11 @@
 		grid-auto-flow: column;
 		grid-auto-columns: calc((100% - var(--peek) - (var(--per) - 1) * var(--gap)) / var(--per));
 		gap: var(--gap);
-		padding: 24px 32px 40px;
+		padding: 40px var(--bleed) 72px;
 		overflow-x: auto;
 		overscroll-behavior-x: contain;
 		scroll-snap-type: x mandatory;
-		scroll-padding-inline: 32px;
+		scroll-padding-inline: var(--bleed);
 		scrollbar-width: none;
 	}
 	.carousel::-webkit-scrollbar {
