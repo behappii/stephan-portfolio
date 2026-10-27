@@ -19,7 +19,6 @@
 				<div class="tile"></div>
 			</div>
 		</div>
-		<span class="va-tag va-tag-violet">SvelteKit · Next.js</span>
 	</div>
 
 	<div class="va-window art-app">
@@ -35,7 +34,6 @@
 				<div class="app-canvas"></div>
 			</div>
 		</div>
-		<span class="va-tag va-tag-violet">Tauri</span>
 	</div>
 
 	<div class="art-phone">
@@ -48,7 +46,6 @@
 			<div class="phone-shine"></div>
 		</div>
 	</div>
-	<span class="va-tag va-tag-violet art-phone-tag">React Native · Flutter</span>
 </div>
 
 <style>
@@ -92,10 +89,6 @@
 		left: 0;
 		width: 80%;
 		height: 290px;
-	}
-	.art-browser :global(.va-tag) {
-		right: 22px;
-		bottom: 20px;
 	}
 	.bar {
 		width: var(--w, 100%);
@@ -149,10 +142,6 @@
 	.art-app :global(.va-window-bar) {
 		padding: 0;
 		height: 26px;
-	}
-	.art-app :global(.va-tag) {
-		right: 18px;
-		bottom: 16px;
 	}
 	.app-client {
 		flex: 1;
@@ -244,18 +233,13 @@
 			rgba(255, 255, 255, 0)
 		);
 	}
-	.art-phone-tag {
-		position: absolute;
-		right: 8px;
-		top: 474px;
-	}
 
 	/* Телефон: окно Tauri убираем, браузер и телефон крупнее, размеры от ширины экрана. */
 	@media (max-width: 600px) {
 		.art {
 			flex-basis: 100%;
 			height: auto;
-			aspect-ratio: 1 / 0.92;
+			aspect-ratio: 1 / 0.84;
 		}
 		.art-glow {
 			left: 8%;
@@ -283,11 +267,6 @@
 		.art-browser :global(.va-window-url) {
 			font-size: 11px;
 		}
-		.art-browser :global(.va-tag) {
-			right: auto;
-			left: 14px;
-			bottom: 14px;
-		}
 		.tile {
 			height: 40px;
 		}
@@ -314,11 +293,6 @@
 		}
 		.phone-cta {
 			height: 26px;
-		}
-		.art-phone-tag {
-			top: auto;
-			right: 0;
-			bottom: 0;
 		}
 	}
 </style>

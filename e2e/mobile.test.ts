@@ -33,23 +33,16 @@ test('меню на телефоне открывается, закрывает�
 	await expect(page).toHaveURL(/#projects$/);
 });
 
-test('картинка первого экрана на телефоне не наезжает сама на себя', async ({ page }) => {
+test('картинка первого экрана на телефоне помещается в свой блок', async ({ page }) => {
 	await page.goto('/');
 	const art = page.locator('.art');
-	const browserTag = await art.getByText('SvelteKit · Next.js').boundingBox();
-	const phoneTag = await art.getByText('React Native · Flutter').boundingBox();
-	const artBox = await art.boundingBox();
-	await expect(art.getByText('Tauri')).toBeHidden();
-	expect(browserTag && phoneTag && artBox).toBeTruthy();
-	const overlap =
-		browserTag!.x < phoneTag!.x + phoneTag!.width &&
-		phoneTag!.x < browserTag!.x + browserTag!.width &&
-		browserTag!.y < phoneTag!.y + phoneTag!.height &&
-		phoneTag!.y < browserTag!.y + browserTag!.height;
-	expect(overlap).toBe(false);
-	// Подписи не выходят за картинку и не лезут на следующий раздел.
-	expect(phoneTag!.y + phoneTag!.height).toBeLessThanOrEqual(artBox!.y + artBox!.height + 1);
-	expect(artBox!.x + artBox!.width).toBeLessThanOrEqual(375);
+	await expect(art.locator('.art-app')).toBeHidden();
+	const artBox = (await art.boundingBox())!;
+	for (const part of ['.art-browser', '.art-phone']) {
+		const box = (await art.locator(part).boundingBox())!;
+		expect(box.y + box.height).toBeLessThanOrEqual(artBox.y + artBox.height + 1);
+		expect(box.x + box.width).toBeLessThanOrEqual(375);
+	}
 });
 
 test('на компьютере шапка без бургера', async ({ page }) => {
@@ -58,5 +51,5 @@ test('на компьютере шапка без бургера', async ({ page
 	const nav = page.getByRole('navigation', { name: 'Основная навигация' });
 	await expect(nav.getByRole('link', { name: 'Проекты' })).toBeVisible();
 	await expect(nav.getByRole('button', { name: 'Открыть меню' })).toBeHidden();
-	await expect(page.locator('.art').getByText('Tauri')).toBeVisible();
+	await expect(page.locator('.art .art-app')).toBeVisible();
 });
