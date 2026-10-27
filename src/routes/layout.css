@@ -10,6 +10,8 @@
 
 html {
 	scroll-behavior: smooth;
+	/* Переход по якорю не прячет заголовок раздела под закреплённой шапкой. */
+	scroll-padding-top: var(--header-h);
 }
 @media (prefers-reduced-motion: reduce) {
 	html {

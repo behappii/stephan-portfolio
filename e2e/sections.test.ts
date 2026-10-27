@@ -68,3 +68,17 @@ test.describe('на телефоне', () => {
 		expect(new Set(xs).size).toBe(1);
 	});
 });
+
+for (const width of [375, 1280]) {
+	test(`шапка остаётся наверху экрана при прокрутке (${width}px)`, async ({ page }) => {
+		await page.setViewportSize({ width, height: 800 });
+		await page.goto('/');
+		await page.locator('#approach').scrollIntoViewIfNeeded();
+		await page.evaluate(() => window.scrollBy({ top: 400, behavior: 'instant' }));
+		const nav = page.getByRole('navigation', { name: 'Основная навигация' });
+		await expect(nav).toBeInViewport();
+		const box = (await nav.boundingBox())!;
+		expect(box.y).toBeGreaterThanOrEqual(0);
+		expect(box.y).toBeLessThan(30);
+	});
+}

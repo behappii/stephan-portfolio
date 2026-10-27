@@ -80,9 +80,18 @@
 
 <style>
 	.site-header {
-		position: relative;
-		z-index: 2;
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		box-sizing: border-box;
+		height: var(--header-h);
 		padding: 20px 24px 0;
+		/* Прозрачные поля вокруг «пилюли» не перехватывают клики по странице под ними. */
+		pointer-events: none;
+	}
+	.site-nav,
+	.menu {
+		pointer-events: auto;
 	}
 	.site-nav {
 		box-sizing: content-box;

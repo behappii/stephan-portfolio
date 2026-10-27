@@ -5,6 +5,7 @@
 	import Contact from '#lib/sections/Contact.svelte';
 	import Hero from '#lib/sections/Hero.svelte';
 	import Projects from '#lib/sections/Projects.svelte';
+	import SiteNav from '#lib/sections/SiteNav.svelte';
 	import Stack from '#lib/sections/Stack.svelte';
 	import type { PageProps } from './$types';
 
@@ -22,7 +23,8 @@
 </svelte:head>
 
 <div id="top" class="va-sky page">
-	<Hero settings={c.settings} nav={c.nav} hasProjects={c.projects.length > 0} />
+	<SiteNav nav={c.nav} />
+	<Hero settings={c.settings} hasProjects={c.projects.length > 0} />
 	{#if c.eyebrows.stack}
 		<Stack
 			items={c.stack}

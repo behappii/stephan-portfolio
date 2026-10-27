@@ -1,15 +1,9 @@
 <script lang="ts">
-	import type { PageContent } from '#lib/server/content.ts';
 	import type { Settings } from '#lib/server/db/schema.ts';
 	import GlossButton from '#lib/ui/GlossButton.svelte';
 	import HeroArt from './HeroArt.svelte';
-	import SiteNav from './SiteNav.svelte';
 
-	let {
-		settings,
-		nav,
-		hasProjects
-	}: { settings: Settings; nav: PageContent['nav']; hasProjects: boolean } = $props();
+	let { settings, hasProjects }: { settings: Settings; hasProjects: boolean } = $props();
 
 	// [left, size, rest, duration, delay, sway] — позиции из макета
 	const BUBBLES: [string, number, string, number, number, boolean][] = [
@@ -44,8 +38,6 @@
 		{/each}
 	</div>
 
-	<SiteNav {nav} />
-
 	<div class="hero-inner">
 		<div class="hero-copy">
 			<div class="hero-badge">
@@ -75,9 +67,12 @@
 </section>
 
 <style>
+	/* Закреплённая шапка стоит над разделом, поэтому раздел заходит под неё. */
 	.hero {
 		position: relative;
 		overflow: hidden;
+		margin-top: calc(-1 * var(--header-h));
+		padding-top: var(--header-h);
 		background:
 			radial-gradient(ellipse 70% 55% at 75% 30%, rgba(196, 168, 255, 0.85), transparent 70%),
 			radial-gradient(ellipse 60% 50% at 10% 0%, rgba(255, 255, 255, 0.9), transparent 70%),
