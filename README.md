@@ -20,17 +20,16 @@ pnpm dev                      # http://localhost:5173, админка — /admin
 | `pnpm check`, `pnpm lint`       | типы и стиль                                                                                        |
 | `pnpm db:generate --name <имя>` | миграция после правки `src/lib/server/db/schema.ts`; затем поднимите `SCHEMA_VERSION` в `client.ts` |
 
-## Развёртывание на VPS
+## Развёртывание через Dokploy
 
-1. Скопируйте репозиторий на сервер, создайте `.env` по образцу `.env.example`.
-2. `docker compose up -d --build` — сайт слушает `127.0.0.1:3000`.
-3. Настройте HTTPS через обратный прокси, например Caddy: `Caddyfile.example`.
+1. В Dokploy создайте сервис типа Compose из этого репозитория, ветка `main`, файл `docker-compose.yml`.
+2. Во вкладке Environment задайте переменные по образцу `.env.example`: Dokploy положит их в `.env` рядом с compose-файлом.
+3. Во вкладке Domains добавьте домен: сервис `web`, порт `3000`, HTTPS через Let's Encrypt.
+4. Deploy. Миграции применяются при старте, база и картинки живут в томе `portfolio-data`.
 
-Обновление: `git pull && docker compose up -d --build`. Миграции применяются при старте.
-
-Продакшен-сервер (`node build`) доверяет заголовкам `X-Forwarded-*` от прокси, поэтому порт открыт только на `127.0.0.1`. Без прокси, напрямую по http, формы отвечают 403: adapter-node считает протокол `https`, и проверка origin не проходит. Локально продакшен-сборку смотрите через `pnpm build && pnpm preview`.
+Порт наружу не публикуется: порт 3000 на хосте занят самим Dokploy, а Traefik ходит в контейнер по внутренней сети. Продакшен-сервер (`node build`) доверяет заголовкам `X-Forwarded-*` от Traefik. Без прокси, напрямую по http, формы отвечают 403: adapter-node считает протокол `https`, и проверка origin не проходит. Локально продакшен-сборку смотрите через `pnpm build && pnpm preview`.
 
 ## Бэкапы
 
 - В админке → «Бэкапы»: скачать архив, загрузить архив, восстановить один из 10 автобэкапов.
-- С сервера: `docker compose cp web:/data ./data-backup` копирует базу, картинки и автобэкапы.
+- С сервера: `docker cp $(docker ps -qf label=com.docker.compose.service=web -f name=portfolio):/data ./data-backup` копирует базу, картинки и автобэкапы.

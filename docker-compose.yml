@@ -6,8 +6,8 @@ services:
     environment:
       DATA_DIR: /data
       BODY_SIZE_LIMIT: 100M
-    ports:
-      - '127.0.0.1:3000:3000'
+    expose:
+      - '3000'
     volumes:
       - portfolio-data:/data
 
