@@ -210,6 +210,12 @@
 		align-items: center;
 		gap: 64px;
 	}
+	/* Телефон и планшет: чип с именем ближе к шапке. */
+	@media (max-width: 900px) {
+		.hero-inner {
+			padding-top: 32px;
+		}
+	}
 	.hero-copy {
 		flex: 1 1 520px;
 		min-width: 0;
