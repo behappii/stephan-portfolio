@@ -20,11 +20,6 @@
 	grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
 	gap: 18px;
 }
-:where(#projects) .story-track {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr));
-	gap: 28px;
-}
 :where(#approach) .story-track {
 	margin: 0;
 	padding: 0;
@@ -223,36 +218,10 @@
 			grid-column: 2;
 			font-size: 18px;
 		}
-		#projects .story-card {
-			display: grid;
-			grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-			gap: 8px;
-			padding: 16px;
-		}
-		#projects .story-card > .va-well {
-			height: auto;
-			min-height: 0;
-		}
-		#projects .story-card > .va-project-body {
-			padding: 40px 36px;
-			justify-content: center;
-			gap: 18px;
-		}
-		#projects .story-card p {
-			font-size: 20px;
-		}
-		#projects .story-card .va-project-year {
-			font-size: 18px;
-		}
-		#projects .story-card .va-tags > .va-tag {
-			font-size: 16px;
-			padding: 8px 16px;
-		}
 
 		@media (max-width: 760px) {
 			#stack .story-card,
-			#approach .story-card,
-			#projects .story-card {
+			#approach .story-card {
 				grid-template-columns: minmax(0, 1fr);
 				padding: 32px 28px;
 			}
@@ -268,12 +237,6 @@
 			#stack .story-card > .va-tags,
 			#approach .story-card > .step-tech {
 				grid-column: auto;
-			}
-			#projects .story-card > .va-well {
-				min-height: 200px;
-			}
-			#projects .story-card > .va-project-body {
-				padding: 20px 12px;
 			}
 		}
 	}

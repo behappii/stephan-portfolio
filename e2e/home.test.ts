@@ -16,7 +16,7 @@ test('стек, проекты и подход выводятся из базы'
 	await expect(page.getByRole('heading', { name: 'Работает везде' })).toBeVisible();
 	await expect(page.getByText('01 · стек')).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Избранные работы' })).toBeAttached();
-	await expect(page.locator('#projects .story-card')).toHaveCount(4);
+	await expect(page.locator('#projects .carousel-card')).toHaveCount(4);
 	await expect(
 		page.getByRole('heading', { name: 'Сайт под ключ, исходники — ваши' })
 	).toBeAttached();
