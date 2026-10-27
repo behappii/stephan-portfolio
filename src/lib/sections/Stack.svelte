@@ -14,11 +14,7 @@
 
 <section id="stack" class="story" aria-labelledby="stack-title" style="--n: {items.length}">
 	<div class="story-inner">
-		<SectionHeader id="stack-title" {eyebrow} {title}>
-			{#snippet aside()}
-				{#if subtitle}<p class="va-section-aside">{subtitle}</p>{/if}
-			{/snippet}
-		</SectionHeader>
+		<SectionHeader id="stack-title" {eyebrow} {title} {subtitle} />
 		<div class="story-track">
 			{#each items as item, i (item.id)}
 				<article
