@@ -5,6 +5,13 @@
 
 	let { settings, hasProjects }: { settings: Settings; hasProjects: boolean } = $props();
 
+	// Пузырьки взлетают через весь раздел до шапки. Длительности из макета рассчитаны
+	// на подъём в 880px, поэтому на высоком экране время растёт вместе с путём.
+	const BASE_RISE = 880;
+	let heroHeight = $state(BASE_RISE);
+	// +120px — чтобы за край уходил даже самый крупный пузырёк (110px).
+	const rise = $derived(Math.max(BASE_RISE, heroHeight + 120));
+
 	// [left, size, rest, duration, delay, sway] — позиции из макета
 	const BUBBLES: [string, number, string, number, number, boolean][] = [
 		['3%', 90, '58%', 18, -2, false],
@@ -26,7 +33,12 @@
 	];
 </script>
 
-<section aria-labelledby="hero-title" class="hero">
+<section
+	aria-labelledby="hero-title"
+	class="hero"
+	bind:clientHeight={heroHeight}
+	style="--rise: {rise}px; --slow: {rise / BASE_RISE}"
+>
 	<div class="wave" aria-hidden="true"></div>
 	<div class="wave-line" aria-hidden="true"></div>
 	<div aria-hidden="true">
@@ -123,7 +135,8 @@
 		border: 1px solid rgba(255, 255, 255, 0.85);
 		box-shadow: inset 0 -6px 14px rgba(124, 58, 237, 0.22);
 		will-change: transform;
-		animation: bubbleRiseA var(--dur) linear var(--delay) infinite;
+		animation: bubbleRiseA calc(var(--dur) * var(--slow, 1)) linear
+			calc(var(--delay) * var(--slow, 1)) infinite;
 	}
 	.rise.sway-b {
 		animation-name: bubbleRiseB;
@@ -137,13 +150,13 @@
 			opacity: 1;
 		}
 		50% {
-			transform: translate3d(18px, -430px, 0);
+			transform: translate3d(18px, calc(var(--rise, 880px) * -0.49), 0);
 		}
 		92% {
 			opacity: 1;
 		}
 		100% {
-			transform: translate3d(-8px, -880px, 0);
+			transform: translate3d(-8px, calc(var(--rise, 880px) * -1), 0);
 			opacity: 0;
 		}
 	}
@@ -156,13 +169,13 @@
 			opacity: 1;
 		}
 		50% {
-			transform: translate3d(-16px, -430px, 0);
+			transform: translate3d(-16px, calc(var(--rise, 880px) * -0.49), 0);
 		}
 		92% {
 			opacity: 1;
 		}
 		100% {
-			transform: translate3d(10px, -880px, 0);
+			transform: translate3d(10px, calc(var(--rise, 880px) * -1), 0);
 			opacity: 0;
 		}
 	}
