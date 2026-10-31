@@ -18,7 +18,7 @@
 		<h2 id="contact-title" class="contact-title">{settings.contactTitle}</h2>
 		<div class="contact-actions">
 			<a class="contact-email" href="mailto:{settings.email}">
-				{settings.email}
+				Связаться
 				<Icon name="arrow-up-right" size={20} strokeWidth={2.4} />
 			</a>
 			{#if links.length}
@@ -116,6 +116,13 @@
 		transform: translateY(-2px);
 		filter: brightness(1.04);
 		color: var(--violet-900);
+	}
+	@media (max-width: 759px) {
+		.contact-email {
+			box-sizing: border-box;
+			width: 100%;
+			justify-content: center;
+		}
 	}
 	.contact-links {
 		display: flex;
